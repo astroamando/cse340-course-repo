@@ -1,0 +1,16 @@
+<%- include("partials/header", { title: title }) %>
+<main>
+  <h1>Categories</h1>
+  <% if (typeof notice !== "undefined" && notice) { %><p class="notice" role="status"><%= notice %></p><% } %>
+  <p><a class="button-link" href="/categories/new-category">Create New Category</a></p>
+  <% if (categories.length === 0) { %>
+    <p>No categories found.</p>
+  <% } else { %>
+    <ul>
+      <% categories.forEach((category) => { %>
+        <li><a href="/category/<%= category.category_id %>"><%= category.name %></a> — <a href="/categories/edit-category/<%= category.category_id %>">Edit</a></li>
+      <% }) %>
+    </ul>
+  <% } %>
+</main>
+<%- include("partials/footer") %>

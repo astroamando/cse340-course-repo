@@ -1,0 +1,78 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f7fb;
+  color: #1f2937;
+}
+
+header, footer {
+  background: #1e3a5f;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+main {
+  max-width: 900px;
+  margin: 2rem auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+li {
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 600px) {
+  main {
+    margin: 1rem;
+    padding: 1rem;
+  }
+}
+.organization-list {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.organization-card {
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.organization-logo {
+  width: 140px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.organization-card h2 {
+  margin: 0.5rem 0;
+}
+/* W04 forms */
+.data-form { max-width: 36rem; display: grid; gap: .75rem; margin: 1rem 0; }
+.data-form label { font-weight: 700; }
+.data-form input { padding: .7rem; border: 1px solid #777; border-radius: .35rem; font: inherit; }
+.data-form button, .button-link { display: inline-block; width: fit-content; padding: .65rem 1rem; border: 0; border-radius: .35rem; background: #173b57; color: white; text-decoration: none; font: inherit; cursor: pointer; }
+.form-errors { max-width: 36rem; padding: .5rem 1rem; border: 2px solid #9b1c1c; border-radius: .35rem; }
+.notice { max-width: 36rem; padding: .75rem 1rem; border: 2px solid #246b36; border-radius: .35rem; }

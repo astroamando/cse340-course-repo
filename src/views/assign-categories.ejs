@@ -1,0 +1,36 @@
+<%- include("partials/header", { title: title }) %>
+
+<main>
+  <h1>Update Categories</h1>
+
+  <h2><%= project.title %></h2>
+
+  <p>Select the categories that apply to this service project.</p>
+
+  <form action="/projects/<%= project.project_id %>/categories" method="POST">
+        <% categories.forEach((category) => { %>
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            name="categories"
+            value="<%= category.category_id %>"
+            <%= assignedCategoryIds.includes(category.category_id) ? "checked" : "" %>
+          >
+          <%= category.name %>
+        </label>
+      </div>
+    <% }) %>
+        <br>
+
+    <button type="submit">Save Categories</button>
+  </form>
+
+  <p>
+    <a href="/projects/<%= project.project_id %>">
+      ← Back to Project
+    </a>
+  </p>
+</main>
+
+<%- include("partials/footer") %>

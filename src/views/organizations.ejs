@@ -1,0 +1,36 @@
+<%- include("partials/header", { title: title }) %>
+
+<main>
+  <h1>Partner Organizations</h1>
+
+  <% if (organizations.length === 0) { %>
+    <p>No organizations were found.</p>
+  <% } else { %>
+    <div class="organization-list">
+      <% organizations.forEach((organization) => { %>
+        <article class="organization-card">
+          <img
+            src="/images/<%= organization.logo_filename %>"
+            alt="<%= organization.name %> logo"
+            class="organization-logo"
+          >
+
+          <h2>
+            <a href="/organization/<%= organization.organization_id %>">
+              <%= organization.name %>
+            </a>
+          </h2>
+
+          <p><%= organization.description %></p>
+          <p>
+            <a href="mailto:<%= organization.contact_email %>">
+              <%= organization.contact_email %>
+            </a>
+          </p>
+        </article>
+      <% }) %>
+    </div>
+  <% } %>
+</main>
+
+<%- include("partials/footer") %>
