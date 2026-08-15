@@ -3,8 +3,17 @@
 <main>
   <h2>Welcome</h2>
 
+  <% if (typeof notice !== "undefined" && notice) { %>
+    <p class="notice"><%= notice %></p>
+  <% } %>
+
   <p>Welcome to the Community Service Network website.</p>
-  <img src="/images/home.jpg" alt="Community Service Network Home" width="500">
+
+  <img
+    src="/images/home.jpg"
+    alt="Community Service Network Home"
+    width="500"
+  >
 </main>
 
 <%- include("partials/footer") %>

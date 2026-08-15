@@ -1,5 +1,6 @@
 import express from "express";
 import session from "express-session";
+import flash from "connect-flash";
 import "dotenv/config";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -33,11 +34,17 @@ app.use(
   })
 );
 
+// Enable flash messages
+app.use(flash());
+
 app.use((req, res, next) => {
   res.locals.NODE_ENV = process.env.NODE_ENV || "production";
   res.locals.currentPath = req.path;
+
+  // Make flash messages available to EJS views
   res.locals.notice =
-    typeof req.query.notice === "string" ? req.query.notice : "";
+    req.flash("notice")[0] ||
+    (typeof req.query.notice === "string" ? req.query.notice : "");
 
   res.locals.user = req.session.user || null;
 

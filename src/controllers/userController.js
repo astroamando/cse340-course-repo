@@ -4,8 +4,7 @@ import * as userModel from "../models/users.js";
 const buildRegister = async (req, res) => {
   res.render("users/register", {
     title: "Register",
-  });
-};
+  });};
 
 const registerUser = async (req, res) => {
   try {
@@ -30,6 +29,7 @@ const registerUser = async (req, res) => {
       "user"
     );
 
+    req.flash("notice", "Registration successful. Please log in.");
     res.redirect("/login");
   } catch (error) {
     console.error(error);
@@ -76,6 +76,7 @@ const loginUser = async (req, res) => {
       role: user.role,
     };
 
+    req.flash("notice", "Login successful.");
     res.redirect("/dashboard");
   } catch (error) {
     console.error(error);
@@ -90,7 +91,7 @@ const logoutUser = async (req, res) => {
       return res.status(500).send("Unable to log out.");
     }
 
-    res.redirect("/");
+    res.redirect("/?notice=You have been logged out.");
   });
 };
 

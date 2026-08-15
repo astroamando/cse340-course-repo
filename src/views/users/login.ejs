@@ -3,6 +3,10 @@
 <main>
   <h1>Login</h1>
 
+  <% if (typeof notice !== "undefined" && notice) { %>
+    <p class="notice"><%= notice %></p>
+  <% } %>
+
   <% if (typeof error !== "undefined" && error) { %>
     <p class="notice"><%= error %></p>
   <% } %>
