@@ -12,6 +12,8 @@ import {
   processAssignCategories,
 } from "../controllers/projectController.js";
 
+import { requireRole } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
 const projectValidationRules = [
@@ -46,17 +48,46 @@ const projectValidationRules = [
 // List all projects
 router.get("/", showProjectsPage);
 
-// Create a new project
-router.get("/new", showNewProjectPage);
-router.post("/new", projectValidationRules, processNewProject);
+// Create - ADMIN ONLY
+router.get(
+  "/new",
+  requireRole("admin"),
+  showNewProjectPage
+);
 
-// Edit an existing project
-router.get("/:id/edit", showEditProjectPage);
-router.post("/:id/edit", projectValidationRules, processEditProject);
+router.post(
+  "/new",
+  requireRole("admin"),
+  projectValidationRules,
+  processNewProject
+);
 
-// Assign categories to a project
-router.get("/:id/categories", showAssignCategoriesPage);
-router.post("/:id/categories", processAssignCategories);
+// Edit - ADMIN ONLY
+router.get(
+  "/:id/edit",
+  requireRole("admin"),
+  showEditProjectPage
+);
+
+router.post(
+  "/:id/edit",
+  requireRole("admin"),
+  projectValidationRules,
+  processEditProject
+);
+
+// Assign categories - ADMIN ONLY
+router.get(
+  "/:id/categories",
+  requireRole("admin"),
+  showAssignCategoriesPage
+);
+
+router.post(
+  "/:id/categories",
+  requireRole("admin"),
+  processAssignCategories
+);
 
 // Project details
 router.get("/:id", showProjectDetailsPage);

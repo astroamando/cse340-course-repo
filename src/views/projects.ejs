@@ -3,9 +3,11 @@
 <main>
   <h1>Service Projects</h1>
 
-  <p>
-    <a href="/projects/new">Create New Project</a>
-  </p>
+  <% if (user && user.role === "admin") { %>
+    <p>
+      <a href="/projects/new">Create New Project</a>
+    </p>
+  <% } %>
 
   <% if (projects.length === 0) { %>
     <p>No service projects found.</p>
@@ -27,6 +29,20 @@
             <strong>Location:</strong> <%= project.location %>
             <strong>Date:</strong> <%= project.date %>
           </p>
+
+          <% if (user && user.role === "admin") { %>
+            <p>
+              <a href="/projects/<%= project.project_id %>/edit">
+                Edit Project
+              </a>
+
+              |
+              
+              <a href="/projects/<%= project.project_id %>/categories">
+                Assign Categories
+              </a>
+            </p>
+          <% } %>
         </li>
       <% }) %>
     </ul>

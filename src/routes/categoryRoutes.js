@@ -10,6 +10,8 @@ import {
   processEditCategory,
 } from "../controllers/categoryController.js";
 
+import { requireRole } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
 const categoryValidationRules = [
@@ -25,20 +27,35 @@ const categoryValidationRules = [
 
 router.get("/", showCategoriesPage);
 
-router.get("/new-category", showNewCategoryPage);
+// Create - ADMIN ONLY
+router.get(
+  "/new-category",
+  requireRole("admin"),
+  showNewCategoryPage
+);
+
 router.post(
   "/new-category",
+  requireRole("admin"),
   categoryValidationRules,
   processNewCategory
 );
 
-router.get("/edit-category/:id", showEditCategoryPage);
+// Edit - ADMIN ONLY
+router.get(
+  "/edit-category/:id",
+  requireRole("admin"),
+  showEditCategoryPage
+);
+
 router.post(
   "/edit-category/:id",
+  requireRole("admin"),
   categoryValidationRules,
   processEditCategory
 );
 
+// Category details
 router.get("/:id", showCategoryDetailsPage);
 
 export default router;

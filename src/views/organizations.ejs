@@ -3,6 +3,12 @@
 <main>
   <h1>Partner Organizations</h1>
 
+  <% if (user && user.role === "admin") { %>
+    <p>
+      <a href="/organizations/new">Create New Organization</a>
+    </p>
+  <% } %>
+
   <% if (organizations.length === 0) { %>
     <p>No organizations were found.</p>
   <% } else { %>
@@ -22,11 +28,20 @@
           </h2>
 
           <p><%= organization.description %></p>
+
           <p>
             <a href="mailto:<%= organization.contact_email %>">
               <%= organization.contact_email %>
             </a>
           </p>
+
+          <% if (user && user.role === "admin") { %>
+            <p>
+              <a href="/organizations/<%= organization.organization_id %>/edit">
+                Edit Organization
+              </a>
+            </p>
+          <% } %>
         </article>
       <% }) %>
     </div>

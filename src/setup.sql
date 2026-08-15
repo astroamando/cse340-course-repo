@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS project_categories;
 DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS categories;
@@ -9,6 +10,15 @@ CREATE TABLE organizations (
   description TEXT NOT NULL,
   contact_email VARCHAR(255) NOT NULL,
   logo_filename VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE users (
+  user_id SERIAL PRIMARY KEY,
+  first_name VARCHAR(100) NOT NULL,
+  last_name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role VARCHAR(50) NOT NULL DEFAULT 'user'
 );
 
 CREATE TABLE projects (

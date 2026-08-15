@@ -10,6 +10,8 @@ import {
   processEditOrganization,
 } from "../controllers/organizationController.js";
 
+import { requireRole } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
 
 const organizationValidationRules = [
@@ -43,18 +45,30 @@ const organizationValidationRules = [
 
 router.get("/", showOrganizationsPage);
 
-// Create
-router.get("/new", showNewOrganizationPage);
+// Create - ADMIN ONLY
+router.get(
+  "/new",
+  requireRole("admin"),
+  showNewOrganizationPage
+);
+
 router.post(
   "/new",
+  requireRole("admin"),
   organizationValidationRules,
   processNewOrganization
 );
 
-// Edit
-router.get("/:id/edit", showEditOrganizationPage);
+// Edit - ADMIN ONLY
+router.get(
+  "/:id/edit",
+  requireRole("admin"),
+  showEditOrganizationPage
+);
+
 router.post(
   "/:id/edit",
+  requireRole("admin"),
   organizationValidationRules,
   processEditOrganization
 );
