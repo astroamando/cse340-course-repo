@@ -4,7 +4,8 @@ import * as userModel from "../models/users.js";
 const buildRegister = async (req, res) => {
   res.render("users/register", {
     title: "Register",
-  });};
+  });
+};
 
 const registerUser = async (req, res) => {
   try {
@@ -13,10 +14,8 @@ const registerUser = async (req, res) => {
     const existingUser = await userModel.getUserByEmail(email);
 
     if (existingUser) {
-      return res.render("users/register", {
-        title: "Register",
-        error: "An account with that email already exists.",
-      });
+      req.flash("notice", "An account with that email already exists.");
+      return res.redirect("/register");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -50,10 +49,8 @@ const loginUser = async (req, res) => {
     const user = await userModel.getUserByEmail(email);
 
     if (!user) {
-      return res.render("users/login", {
-        title: "Login",
-        error: "Invalid email or password.",
-      });
+      req.flash("notice", "Invalid email or password.");
+      return res.redirect("/login");
     }
 
     const passwordMatches = await bcrypt.compare(
@@ -62,10 +59,8 @@ const loginUser = async (req, res) => {
     );
 
     if (!passwordMatches) {
-      return res.render("users/login", {
-        title: "Login",
-        error: "Invalid email or password.",
-      });
+      req.flash("notice", "Invalid email or password.");
+      return res.redirect("/login");
     }
 
     req.session.user = {
@@ -85,14 +80,11 @@ const loginUser = async (req, res) => {
 };
 
 const logoutUser = async (req, res) => {
-  req.session.destroy((error) => {
-    if (error) {
-      console.error(error);
-      return res.status(500).send("Unable to log out.");
-    }
+  req.session.user = null;
 
-    res.redirect("/?notice=You have been logged out.");
-  });
+  req.flash("notice", "You have been logged out successfully.");
+
+  res.redirect("/");
 };
 
 const buildUsers = async (req, res) => {

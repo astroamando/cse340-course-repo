@@ -3,8 +3,8 @@
 <main>
   <h1>Register</h1>
 
-  <% if (typeof error !== "undefined" && error) { %>
-    <p class="notice"><%= error %></p>
+  <% if (typeof notice !== "undefined" && notice) { %>
+    <p class="notice"><%= notice %></p>
   <% } %>
 
   <form action="/register" method="POST">
