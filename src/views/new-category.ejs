@@ -1,12 +1,41 @@
 <%- include("partials/header", { title }) %>
+
 <main>
   <h1>Create New Category</h1>
-  <% if (errors.length) { %><div class="form-errors" role="alert"><ul><% errors.forEach(error => { %><li><%= error %></li><% }) %></ul></div><% } %>
-  <form action="/categories/new-category" method="post" class="data-form">
+
+  <% if (errors.length) { %>
+    <div class="form-errors" role="alert">
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+
+  <form
+    action="/categories/new-category"
+    method="post"
+    class="data-form"
+  >
     <label for="category_name">Category Name</label>
-    <input id="category_name" name="category_name" type="text" value="<%= categoryName %>" required maxlength="100">
+
+    <input
+      id="category_name"
+      name="category_name"
+      type="text"
+      value="<%= categoryName %>"
+      required
+      minlength="2"
+      maxlength="100"
+    >
+
     <button type="submit">Create Category</button>
   </form>
-  <p><a href="/categories">← Back to Categories</a></p>
+
+  <p>
+    <a href="/categories">← Back to Categories</a>
+  </p>
 </main>
+
 <%- include("partials/footer") %>

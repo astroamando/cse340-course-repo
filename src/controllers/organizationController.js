@@ -1,3 +1,5 @@
+import { validationResult } from "express-validator";
+
 import {
   getAllOrganizations,
   getOrganizationDetails,
@@ -5,48 +7,6 @@ import {
   createOrganization,
   updateOrganization,
 } from "../models/organizations.js";
-
-const validateOrganization = (name, description, contactEmail) => {
-  const errors = [];
-
-  const cleanName = (name || "").trim();
-  const cleanDescription = (description || "").trim();
-  const cleanEmail = (contactEmail || "").trim();
-
-  if (!cleanName) {
-    errors.push("Organization name is required.");
-  }
-
-  if (cleanName && cleanName.length < 3) {
-    errors.push("Organization name must be at least 3 characters long.");
-  }
-
-  if (cleanName.length > 100) {
-    errors.push("Organization name must be no more than 100 characters long.");
-  }
-
-  if (!cleanDescription) {
-    errors.push("Description is required.");
-  }
-
-  if (!cleanEmail) {
-    errors.push("Contact email is required.");
-  }
-
-  if (
-    cleanEmail &&
-    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)
-  ) {
-    errors.push("Please enter a valid email address.");
-  }
-
-  return {
-    name: cleanName,
-    description: cleanDescription,
-    contactEmail: cleanEmail,
-    errors,
-  };
-};
 
 const showOrganizationsPage = async (req, res) => {
   try {
@@ -99,17 +59,9 @@ const showNewOrganizationPage = (req, res) => {
 };
 
 const processNewOrganization = async (req, res) => {
-  const {
-    name,
-    description,
-    contactEmail,
-    errors,
-  } = validateOrganization(
-    req.body.name,
-    req.body.description,
-    req.body.contact_email
-  );
-
+  const name = (req.body.name || "").trim();
+  const description = (req.body.description || "").trim();
+  const contactEmail = (req.body.contact_email || "").trim();
   const logoFilename = (req.body.logo_filename || "").trim();
 
   const organization = {
@@ -119,7 +71,13 @@ const processNewOrganization = async (req, res) => {
     logo_filename: logoFilename,
   };
 
-  if (errors.length) {
+  const validationErrors = validationResult(req);
+
+  if (!validationErrors.isEmpty()) {
+    const errors = validationErrors
+      .array()
+      .map((error) => error.msg);
+
     return res.status(400).render("new-organization", {
       title: "Create New Organization",
       organization,
@@ -170,16 +128,9 @@ const showEditOrganizationPage = async (req, res) => {
 const processEditOrganization = async (req, res) => {
   const id = req.params.id;
 
-  const {
-    name,
-    description,
-    contactEmail,
-    errors,
-  } = validateOrganization(
-    req.body.name,
-    req.body.description,
-    req.body.contact_email
-  );
+  const name = (req.body.name || "").trim();
+  const description = (req.body.description || "").trim();
+  const contactEmail = (req.body.contact_email || "").trim();
 
   try {
     const existingOrganization = await getOrganizationDetails(id);
@@ -201,7 +152,13 @@ const processEditOrganization = async (req, res) => {
       logo_filename: logoFilename,
     };
 
-    if (errors.length) {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      const errors = validationErrors
+        .array()
+        .map((error) => error.msg);
+
       return res.status(400).render("edit-organization", {
         title: "Edit Organization",
         organization,

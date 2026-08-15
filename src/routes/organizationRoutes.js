@@ -1,4 +1,6 @@
 import express from "express";
+import { body } from "express-validator";
+
 import {
   showOrganizationsPage,
   showOrganizationDetailsPage,
@@ -10,17 +12,54 @@ import {
 
 const router = express.Router();
 
+const organizationValidationRules = [
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Organization name is required.")
+    .isLength({ min: 3, max: 100 })
+    .withMessage(
+      "Organization name must be between 3 and 100 characters."
+    ),
+
+  body("description")
+    .trim()
+    .notEmpty()
+    .withMessage("Description is required."),
+
+  body("contact_email")
+    .trim()
+    .notEmpty()
+    .withMessage("Contact email is required.")
+    .isEmail()
+    .withMessage("Please enter a valid email address."),
+
+  body("logo_filename")
+    .optional({ checkFalsy: true })
+    .trim()
+    .isLength({ max: 255 })
+    .withMessage("Logo filename must be no more than 255 characters."),
+];
+
 router.get("/", showOrganizationsPage);
 
-// Create a new organization
+// Create
 router.get("/new", showNewOrganizationPage);
-router.post("/new", processNewOrganization);
+router.post(
+  "/new",
+  organizationValidationRules,
+  processNewOrganization
+);
 
-// Edit an organization
+// Edit
 router.get("/:id/edit", showEditOrganizationPage);
-router.post("/:id/edit", processEditOrganization);
+router.post(
+  "/:id/edit",
+  organizationValidationRules,
+  processEditOrganization
+);
 
-// Organization details
+// Details
 router.get("/:id", showOrganizationDetailsPage);
 
 export default router;
